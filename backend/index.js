@@ -7,7 +7,7 @@ const cors = require("cors");
 
 var db = mysql.createConnection({
     host:'34.136.215.26',
-    user: 'lizhijia199805@gmail.com',
+    user: 'root',
     password:'12345',
     database:'AISFINE',
 })
@@ -36,6 +36,7 @@ app.use(express.json());
 app.get("/api/get", (require, response) => {
     const sqlSelect = "SELECT * FROM test";
     db.query(sqlSelect, (err, result) => {
+        console.log(result)
         response.send(result);
     });
 });
@@ -43,30 +44,12 @@ app.get("/api/get", (require, response) => {
 app.post("/api/insert", (require, response) => {
     const RestaurantName = require.body.RestaurantName;
     const RestaurantReview = require.body.RestaurantReview;
-    var id;
-    var number;
-    //var number;
-    db.query("select max(testid) from test", (err, result) => {
-        id = result;
-        number = id[0]['max(testid)'];
-        //console.log(id[0]['max(testid)']);
-    })
-
-    const sqlInsert = "INSERT INTO `test` (`name`, `info`,`testid`) VALUES (?,?,?)";
-    db.query(sqlInsert, [RestaurantName, RestaurantReview, number], (err, result) => {
-        console.log(typeof number);
-        //console.log(error);
-    })
-});
-
-/*app.post("/api/insert", (require, response) => {
-    const RestaurantName = require.body.RestaurantName;
-    const movieReview = require.body.movieReview;
-    const sqlInsert = "INSERT INTO `Reviews` (`name`, `description`) VALUES (?,?)";
-    db.query(sqlInsert, [RestaurantName, movieReview], (err, result) => {
+    const sqlInsert = "INSERT INTO `test` (`name`, `info`) VALUES (?,?)";
+    db.query(sqlInsert, [RestaurantName, RestaurantReview], (err, result) => {
+        if (err)
         console.log(error);
     })
-});*/
+});
 
 app.delete("/api/delete/:RestaurantName", (require, response) => {
     const RestaurantName = require.params.RestaurantName;
@@ -78,7 +61,7 @@ app.delete("/api/delete/:RestaurantName", (require, response) => {
     })
 });
 
-app.get("/api/search", (require, response) => {
+/*app.get("/api/search", (require, response) => {
   const RestaurantName = require.body.RestaurantName;
   const RestaurantReview = require.body.RestaurantReview;
   const info = "select `info` from test where name = ?";
@@ -89,7 +72,7 @@ app.get("/api/search", (require, response) => {
 
   )
 }
-);
+);*/
 
 app.put("/api/update/", (require, response) => {
     const RestaurantName = require.body.RestaurantName;
