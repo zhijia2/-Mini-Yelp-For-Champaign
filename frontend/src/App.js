@@ -8,6 +8,7 @@ function App() {
   const [RestaurantReviewList, setRestaurantReviewList] = useState([]);
   const [newReview, setNewReview] = useState("");
   const [searchValue, setSearchValue] = useState('');
+  const [ReviewList, setReviewList] = useState([]);
 
   useEffect(() => {
     Axios.get('http://localhost:3002/api/get').then((response) => {
@@ -49,6 +50,23 @@ function App() {
     setNewReview("")
   };
 
+  const longestRevew = () => {
+    Axios.get('http://localhost:3002/api/getLongest').then((response) => {
+      setReviewList(response.data)
+    });
+
+    setReviewList([
+      ...ReviewList,
+      {
+        RestaurantName: RestaurantName,
+        RestaurantReview: Review
+      }
+    ])
+  }
+//   Axios.get('http://localhost:3002/api/get').then((response) => {
+//     setRestaurantReviewList(response.data)
+//   })
+// },[])
   return (
     <div className="App">
       <h1>Find a Restaurant!</h1>
@@ -100,6 +118,13 @@ function App() {
 
       </div>
 
+
+      <div className="form">
+        <h1>Longest Review under each restaurant!</h1>
+        <button onClick={longestRevew}> Submit</button>
+
+
+      </div>
     </div>
   );
 }

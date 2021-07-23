@@ -41,6 +41,15 @@ app.get("/api/get", (require, response) => {
     });
 });
 
+app.get("/api.getLongest", (require, response) => {
+    const sqlSelect = 'select rv.reviewid,rv.timeofpub, rv.description, rv.rating, r.name, r.streetAddress, r.overallRating, r.telephone from AISFINE.Reviews rv join AISFINE.Restaurants r using (restaurantId) where char_length(description) = (select max(char_length(description)) from AISFINE.Reviews rv1 '
+                        + 'group by rv1.restaurantId having rv.restaurantId = rv1.restaurantId) order by r.name;'
+    db.query(sqlSelect, (err, result) => {
+        //console.log(result)
+        response.send(result);
+    });
+})
+
 app.post("/api/insert", (require, response) => {
     const RestaurantName = require.body.RestaurantName;
     const RestaurantReview = require.body.RestaurantReview;
