@@ -51,7 +51,7 @@ function App() {
   };
 
   const longestRevew = () => {
-    Axios.get('http://localhost:3002/api/getLongest').then((response) => {
+    Axios.get(`http://localhost:3002/api/getLongest`).then((response) => {
       setReviewList(response.data)
     });
 
@@ -60,9 +60,9 @@ function App() {
       {
         RestaurantName: RestaurantName,
         RestaurantReview: Review
-      }
-    ])
-  }
+      },
+    ]);
+  };
 //   Axios.get('http://localhost:3002/api/get').then((response) => {
 //     setRestaurantReviewList(response.data)
 //   })
@@ -92,6 +92,10 @@ function App() {
               <p>Price Level: {val.priceLevel}</p>
               <p>Address: {val.streetAddress}, {val.city}, {val.states} {val.postalCode}</p>
               <p>Number: {val.telephone}</p>
+              <h3>Longest review:</h3>
+              <p>{val.description}</p>
+              <h3>Posted time:</h3>
+              <p>{val.timeofpub}</p>
               <input type="text" id="updateInput" onChange={(e) => {
                 setNewReview(e.target.value)
               } }/>
@@ -107,7 +111,7 @@ function App() {
         <input type="text" name="RestaurantName" placeholder = "Name" onChange={(e) => {
           setRestaurantName(e.target.value)
         } }/>
-        <label> Review:</label>
+        <label> Rating:</label>
         <input type="text" name="Review" placeholder = "Skip if to delete" onChange={(e) => {
           setReview(e.target.value)
         }}/>
@@ -119,12 +123,20 @@ function App() {
       </div>
 
 
-      <div className="form">
+      {/* <div className="form">
         <h1>Longest Review under each restaurant!</h1>
-        <button onClick={longestRevew}> Submit</button>
+        <button onClick={longestRevew()}> Show me </button>
+        {ReviewList.map((val) => {
+          return (
+            <div className = "card">
+              <h1>{val.name}</h1>
+              <p>{val.rating}</p>
+              <p>{val.description}</p>
 
-
-      </div>
+              </div>
+          )
+        })}
+      </div> */}
     </div>
   );
 }
