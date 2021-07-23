@@ -3,40 +3,40 @@ import React, {useState, useEffect} from "react";
 import Axios from 'axios';
 
 function App() {
-  const [movieName, setMovieName] = useState('');
+  const [RestaurantName, setRestaurantName] = useState('');
   const [Review, setReview] = useState('');
-  const [movieReviewList, setMovieReviewList] = useState([]);
+  const [RestaurantReviewList, setRestaurantReviewList] = useState([]);
   const [newReview, setNewReview] = useState("");
 
   useEffect(() => {
     Axios.get('http://localhost:3002/api/get').then((response) => {
-      setMovieReviewList(response.data)
+      setRestaurantReviewList(response.data)
     })
   },[])
 
   const submitReview = () => {
     Axios.post('http://localhost:3002/api/insert', {
-      movieName: movieName,
-      movieReview: Review
+      RestaurantName: RestaurantName,
+      RestaurantReview: Review
     });
 
-    setMovieReviewList([
-      ...movieReviewList,
+    setRestaurantReviewList([
+      ...RestaurantReviewList,
       {
-        movieName: movieName,
-        movieReview: Review
+        RestaurantName: RestaurantName,
+        RestaurantReview: Review
       },
     ]);
   };
 
-  const deleteReview = (movieName) => {
-    Axios.delete(`http://localhost:3002/api/delete/${movieName}`);
+  const deleteReview = (RestaurantName) => {
+    Axios.delete(`http://localhost:3002/api/delete/${RestaurantName}`);
   };
 
-  const updateReview = (movieName) => {
+  const updateReview = (RestaurantName) => {
     Axios.put(`http://localhost:3002/api/update`, {
-      movieName: movieName,
-      movieReview: newReview
+      RestaurantName: RestaurantName,
+      RestaurantReview: newReview
     });
     setNewReview("")
   };
@@ -47,8 +47,8 @@ function App() {
 
       <div className="form">
         <label>Restaurant Name:</label>
-        <input type="text" name="movieName" onChange={(e) => {
-          setMovieName(e.target.value)
+        <input type="text" name="RestaurantName" onChange={(e) => {
+          setRestaurantName(e.target.value)
         } }/>
         <label> Review:</label>
         <input type="text" name="Review" onChange={(e) => {
@@ -57,17 +57,17 @@ function App() {
 
         <button onClick={submitReview}> Submit</button>
 
-        {movieReviewList.map((val) => {
+        {RestaurantReviewList.map((val) => {
           return (
             <div className = "card">
-              <h1> MovieName: {val.movieName} </h1>
-              <p>Movie Review: {val.movieReview}</p>
-              <button onClick={() => { deleteReview(val.movieName) }}> Delete</button>
+              <h1> RestaurantName: {val.RestaurantName} </h1>
+              <p>Restaurant Review: {val.RestaurantReview}</p>
+              <button onClick={() => { deleteReview(val.RestaurantName) }}> Delete</button>
               <input type="text" id="updateInput" onChange={(e) => {
                 setNewReview(e.target.value)
               } }/>
               <button onClick={() => {
-                updateReview(val.movieName)
+                updateReview(val.RestaurantName)
               }}> Update</button>
               </div>
           );
