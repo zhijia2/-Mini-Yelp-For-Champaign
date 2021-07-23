@@ -12,7 +12,7 @@ var db = mysql.createConnection({
     database:'AISFINE',
 })
 
-// db.connect(function(err) {
+ // db.connect(function(err) {
 //     if (err) throw err;
 //     var sql = "INSERT INTO `movie_reviews` (`id`,`RestaurantName`, `movieReview`) VALUES (5,'inception', 'good movie');";
 //     db.query(sql, function (err, result) {
@@ -21,19 +21,20 @@ var db = mysql.createConnection({
 //     });
 //   });
 
-// app.get('/', (require, response) => {
-//     const sqlInsert = "INSERT INTO `movie_reviews` (`RestaurantName`, `movieReview`) VALUES ('Spider2', 'good movie');";
-//     db.query(sqlInsert, (err, result) => {
-//         response.send("Hello world!!!");
-//     })
-// })
+app.get('/', (require, response) => {
+    const sqlInsert = "select  * from Restaurants where restaurantid = 1";
+    db.query(sqlInsert, (err, result) => {
+        response.send(result);
+        console.log("a!");
+    })
+})
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get("/api/get", (require, response) => {
-    const sqlSelect = "SELECT * FROM movie_reviews";
+    const sqlSelect = "SELECT * FROM test";
     db.query(sqlSelect, (err, result) => {
         response.send(result);
     });
@@ -41,9 +42,26 @@ app.get("/api/get", (require, response) => {
 
 app.post("/api/insert", (require, response) => {
     const RestaurantName = require.body.RestaurantName;
-    const movieReview = require.body.movieReview;
+    const RestaurantReview = require.body.RestaurantReview;
+    var id;
+    //var number;
+    db.query("select max(testid) from test", (err, result) => {
+        id = result;
+         const number = id[0]['max(testid)'];
+        //console.log(id[0]['max(testid)']);
+    })
 
-    const sqlInsert = "INSERT INTO `movie_reviews` (`movieName`, `movieReview`) VALUES (?,?)";
+    const sqlInsert = "INSERT INTO `test` (`name`, `info`,`testid`) VALUES (?,?,?)";
+    db.query(sqlInsert, [RestaurantName, RestaurantReview, number], (err, result) => {
+        console.log(typeof number);
+        //console.log(error);
+    })
+});
+
+app.post("/api/insert", (require, response) => {
+    const RestaurantName = require.body.RestaurantName;
+    const movieReview = require.body.movieReview;
+    const sqlInsert = "INSERT INTO `Reviews` (`name`, `description`) VALUES (?,?)";
     db.query(sqlInsert, [RestaurantName, movieReview], (err, result) => {
         console.log(error);
     })
