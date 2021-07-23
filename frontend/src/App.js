@@ -30,8 +30,17 @@ function App() {
     ]);
   };
 
-  const search = (RestaurantName) => {
-    Axios.search()
+  const searchRes = (RestaurantName) => {
+    Axios.get('http://localhost:3002/api/search').then((response) => {
+      setRestaurantReviewList(response.data)
+    })
+    // setRestaurantReviewList([
+    //   ...RestaurantReviewList,
+    //   {
+    //     RestaurantName: RestaurantName,
+    //     RestaurantReview: Review
+    //   },
+    // ]);
   };
 
   const deleteReview = (RestaurantName) => {
@@ -54,24 +63,14 @@ function App() {
         <input type="text" name="RestaurantSearch" placeholder = "Name" onChange={(e) => {
           setRestaurantName(e.target.value)
         } }/>
-        <button onClick={submitReview}> Search</button>
+        <button onClick={searchRes}> Search</button>
       </div>
 
 
-      <h1>Add a Restaurant!</h1>
+      
 
       <div className="form">
-        <label>Restaurant Name to modify:</label>
-        <input type="text" name="RestaurantName" placeholder = "Name" onChange={(e) => {
-          setRestaurantName(e.target.value)
-        } }/>
-        <label> Review:</label>
-        <input type="text" name="Review" placeholder = "Skip if to delete" onChange={(e) => {
-          setReview(e.target.value)
-        }}/>
-
-        <button onClick={submitReview}> Submit</button>
-        <button onClick={() => { deleteReview(RestaurantName) }}> Delete</button>
+        
               
         {RestaurantReviewList.map((val) => {
           return (
@@ -86,9 +85,20 @@ function App() {
               }}> Update</button>
               </div>
           );
-
-          ;
+          
         })}
+        <h1>Add a Restaurant!</h1>
+        <label>Restaurant Name to modify:</label>
+        <input type="text" name="RestaurantName" placeholder = "Name" onChange={(e) => {
+          setRestaurantName(e.target.value)
+        } }/>
+        <label> Review:</label>
+        <input type="text" name="Review" placeholder = "Skip if to delete" onChange={(e) => {
+          setReview(e.target.value)
+        }}/>
+
+        <button onClick={submitReview}> Submit</button>
+        <button onClick={() => { deleteReview(RestaurantName) }}> Delete</button>
 
 
       </div>

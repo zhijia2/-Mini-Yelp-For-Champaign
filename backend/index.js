@@ -36,7 +36,7 @@ app.use(express.json());
 app.get("/api/get", (require, response) => {
     const sqlSelect = "SELECT * FROM test";
     db.query(sqlSelect, (err, result) => {
-        console.log(result)
+        //console.log(result)
         response.send(result);
     });
 });
@@ -61,18 +61,19 @@ app.delete("/api/delete/:RestaurantName", (require, response) => {
     })
 });
 
-/*app.get("/api/search", (require, response) => {
+app.get("/api/search", (require, response) => {
   const RestaurantName = require.body.RestaurantName;
   const RestaurantReview = require.body.RestaurantReview;
-  const info = "select `info` from test where name = ?";
-  db.query(info, RestaurantName, (err, result) => {
+  const sqlSearch = "select `name`, `overallRating` as `info` from Restaurants where `name` like 'A%'";
+  db.query(sqlSearch, RestaurantName, (err, result) => {
     response.send(result);
-    console.log("yes");
+    console.log(result);
+    //console.log(RestaurantName);
   }
 
   )
 }
-);*/
+);
 
 app.put("/api/update/", (require, response) => {
     const RestaurantName = require.body.RestaurantName;
