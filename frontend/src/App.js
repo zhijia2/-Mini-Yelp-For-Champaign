@@ -7,18 +7,19 @@ function App() {
   const [Review, setReview] = useState('');
   const [RestaurantReviewList, setRestaurantReviewList] = useState([]);
   const [newReview, setNewReview] = useState("");
-
+  //const 
   useEffect(() => {
-    Axios.get('http://localhost:3002/api/get').then((response) => {
+    Axios.get('http://34.136.215.26:3002/api/get').then((response) => {
       setRestaurantReviewList(response.data)
     })
   },[])
 
   const submitReview = () => {
-    Axios.post('http://localhost:3002/api/insert', {
+    Axios.post('http://34.136.215.26:3002/api/insert', {
       RestaurantName: RestaurantName,
       RestaurantReview: Review
     });
+
 
     setRestaurantReviewList([
       ...RestaurantReviewList,
@@ -29,12 +30,14 @@ function App() {
     ]);
   };
 
+  const search(){}
+
   const deleteReview = (RestaurantName) => {
-    Axios.delete(`http://localhost:3002/api/delete/${RestaurantName}`);
+    Axios.delete(`http://34.136.215.26:3002/api/delete/${RestaurantName}`);
   };
 
   const updateReview = (RestaurantName) => {
-    Axios.put(`http://localhost:3002/api/update`, {
+    Axios.put(`http://34.136.215.26:3002/api/update`, {
       RestaurantName: RestaurantName,
       RestaurantReview: newReview
     });
