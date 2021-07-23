@@ -34,7 +34,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get("/api/get", (require, response) => {
-    const sqlSelect = "SELECT * FROM test";
+    const sqlSelect = "SELECT * FROM Restaurants where Restaurantid < 20 order by overallRating desc";
     db.query(sqlSelect, (err, result) => {
         //console.log(result)
         response.send(result);
@@ -44,7 +44,7 @@ app.get("/api/get", (require, response) => {
 app.post("/api/insert", (require, response) => {
     const RestaurantName = require.body.RestaurantName;
     const RestaurantReview = require.body.RestaurantReview;
-    const sqlInsert = "INSERT INTO `test` (`name`, `info`) VALUES (?,?)";
+    const sqlInsert = "INSERT INTO `Restaurants` (`name`, overallRating) VALUES (?,?)";
     db.query(sqlInsert, [RestaurantName, RestaurantReview], (err, result) => {
         if (err)
         console.log(error);
@@ -54,7 +54,7 @@ app.post("/api/insert", (require, response) => {
 app.delete("/api/delete/:RestaurantName", (require, response) => {
     const RestaurantName = require.params.RestaurantName;
 
-    const sqlDelete = "DELETE FROM `test` WHERE `name`= ?";
+    const sqlDelete = "DELETE FROM `Restaurants` WHERE `name`= ?";
     db.query(sqlDelete, RestaurantName, (err, result) => {
         if (err)
         console.log(error);
@@ -63,7 +63,7 @@ app.delete("/api/delete/:RestaurantName", (require, response) => {
 
 app.patch("/api/search/", (require, response) => {
   const searchValue = require.body.searchValue;
-  const sqlSearch = "select `name`, `overallRating` as `info` from Restaurants where `name` like '%" + searchValue + "%'";
+  const sqlSearch = "select * from Restaurants where `name` like '%" + searchValue + "%'";
   console.log(searchValue);
   db.query(sqlSearch, searchValue, (err, result) => {
     response.send(result);
@@ -78,9 +78,9 @@ app.put("/api/update/", (require, response) => {
     const RestaurantName = require.body.RestaurantName;
     const RestaurantReview = require.body.RestaurantReview;
 
-    const sqlUpdate = "UPDATE `test` SET `info` = ? WHERE `name`= ?";
+    const sqlUpdate = "UPDATE `Restaurants` SET `overallRating` = ? WHERE `name`= ?";
     db.query(sqlUpdate, [RestaurantReview,RestaurantName ], (err, result) => {
-        console.log(RestaurantReview);
+        //console.log(RestaurantReview);
         if (err)
         console.log(error);
     })

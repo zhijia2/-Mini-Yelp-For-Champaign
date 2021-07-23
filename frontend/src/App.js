@@ -70,13 +70,16 @@ function App() {
           return (
             <div className = "card">
               <h1> {val.name} </h1>
-              <p>Restaurant Review: {val.info}</p>
+              <p>Restaurant Review: {val.overallRating}</p>
+              <p>Price Level: {val.priceLevel}</p>
+              <p>Address: {val.streetAddress}, {val.city}, {val.states} {val.postalCode}</p>
+              <p>Number: {val.telephone}</p>
               <input type="text" id="updateInput" onChange={(e) => {
                 setNewReview(e.target.value)
               } }/>
               <button onClick={() => {
                 updateReview(val.name)
-              }}> Update</button>
+              }}> Rate</button>
               </div>
           );
           

@@ -19,12 +19,11 @@
 }
 
 .card{
-  width:500px;
-  height: 190px;
+  width:600px;
+  height: 300px;
   border: 2px solid grey;
   border-radius: 15px;
   margin: 10px;
-
 }
 
 #updateInput{
