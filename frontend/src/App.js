@@ -7,6 +7,7 @@ function App() {
   const [Review, setReview] = useState('');
   const [RestaurantReviewList, setRestaurantReviewList] = useState([]);
   const [newReview, setNewReview] = useState("");
+  const [searchValue, setSearchValue] = useState('');
 
   useEffect(() => {
     Axios.get('http://localhost:3002/api/get').then((response) => {
@@ -30,17 +31,10 @@ function App() {
     ]);
   };
 
-  const searchRes = (RestaurantName) => {
-    Axios.get('http://localhost:3002/api/search').then((response) => {
+  const searchRes = (searchValue) => {
+    Axios.patch('http://localhost:3002/api/search/', {searchValue: searchValue}).then((response) => {
       setRestaurantReviewList(response.data)
     })
-    // setRestaurantReviewList([
-    //   ...RestaurantReviewList,
-    //   {
-    //     RestaurantName: RestaurantName,
-    //     RestaurantReview: Review
-    //   },
-    // ]);
   };
 
   const deleteReview = (RestaurantName) => {
@@ -61,9 +55,9 @@ function App() {
       <div className="form">
         <label>Restaurant name: </label>
         <input type="text" name="RestaurantSearch" placeholder = "Name" onChange={(e) => {
-          setRestaurantName(e.target.value)
+          setSearchValue(e.target.value)
         } }/>
-        <button onClick={searchRes}> Search</button>
+        <button onClick={() => searchRes(searchValue)}> Search</button>
       </div>
 
 

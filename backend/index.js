@@ -61,14 +61,13 @@ app.delete("/api/delete/:RestaurantName", (require, response) => {
     })
 });
 
-app.get("/api/search", (require, response) => {
-  const RestaurantName = require.body.RestaurantName;
-  const RestaurantReview = require.body.RestaurantReview;
-  const sqlSearch = "select `name`, `overallRating` as `info` from Restaurants where `name` like 'A%'";
-  db.query(sqlSearch, RestaurantName, (err, result) => {
+app.patch("/api/search/", (require, response) => {
+  const searchValue = require.body.searchValue;
+  const sqlSearch = "select `name`, `overallRating` as `info` from Restaurants where `name` like '%" + searchValue + "%'";
+  console.log(searchValue);
+  db.query(sqlSearch, searchValue, (err, result) => {
     response.send(result);
-    console.log(result);
-    //console.log(RestaurantName);
+    //console.log(result);
   }
 
   )
