@@ -53,6 +53,19 @@ app.get("/api.getLongest", (require, response) => {
     });
 });
 
+app.patch("/api/maxvalue/", (require, response) => {
+    const searchmeal = require.body.searchmeal;
+    const sqlSearch = "select count(name) as count, `nameofres` from meal group by `nameofres` having `nameofres` like '%" + searchmeal + "%'";
+    console.log(searchmeal);
+    db.query(sqlSearch, searchmeal, (err, result) => {
+      response.send(result);
+      console.log(result);
+    }
+  
+    )
+  }
+  );
+
 app.post("/api/insert", (require, response) => {
     const RestaurantName = require.body.RestaurantName;
     const RestaurantReview = require.body.RestaurantReview;
@@ -79,7 +92,7 @@ app.patch("/api/search/", (require, response) => {
   console.log(searchValue);
   db.query(sqlSearch, searchValue, (err, result) => {
     response.send(result);
-    //console.log(result);
+    console.log(result);
   }
 
   )
@@ -92,7 +105,7 @@ app.put("/api/update/", (require, response) => {
 
     const sqlUpdate = "UPDATE `Restaurants` SET `overallRating` = ? WHERE `name`= ?";
     db.query(sqlUpdate, [RestaurantReview,RestaurantName ], (err, result) => {
-        //console.log(RestaurantReview);
+        //console.log(RestaurantReview); 
         if (err)
         console.log(error);
     })

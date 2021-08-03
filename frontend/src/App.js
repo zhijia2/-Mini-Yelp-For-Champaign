@@ -9,12 +9,20 @@ function App() {
   const [newReview, setNewReview] = useState("");
   const [searchValue, setSearchValue] = useState('');
   const [ReviewList, setReviewList] = useState([]);
+  const [searchmeal, setsearchmeal] = useState('');
+  const [MealList, setMealList] = useState([]);
 
   useEffect(() => {
     Axios.get('http://localhost:3002/api/get').then((response) => {
       setRestaurantReviewList(response.data)
     })
   },[])
+
+  const getmax = (searchmeal) => {
+    Axios.patch('http://localhost:3002/api/maxvalue/', {searchmeal: searchmeal}).then((response) => {
+          setMealList(response.data)
+        })
+      };
 
   const submitReview = () => {
     Axios.post('http://localhost:3002/api/insert', {
@@ -76,6 +84,7 @@ function App() {
           setSearchValue(e.target.value)
         } }/>
         <button onClick={() => searchRes(searchValue)}> Search</button>
+        
       </div>
 
 
@@ -92,9 +101,7 @@ function App() {
               <p>Price Level: {val.priceLevel}</p>
               <p>Address: {val.streetAddress}, {val.city}, {val.states} {val.postalCode}</p>
               <p>Number: {val.telephone}</p>
-              <h3>Longest review:</h3>
               <p>{val.description}</p>
-              <h3>Posted time:</h3>
               <p>{val.timeofpub}</p>
               <input type="text" id="updateInput" onChange={(e) => {
                 setNewReview(e.target.value)
@@ -122,7 +129,26 @@ function App() {
 
       </div>
 
+      <h1>How many meals this Restaurant have?: </h1>
+        <input type="text" name="RestaurantSearch" placeholder = "Name" onChange={(e) => {
+          setsearchmeal(e.target.value)
+        } }/>
+        <button onClick={() => getmax(searchmeal)}> Search</button>
 
+      {MealList.map((val) => {
+        return (
+          <div className = "card">
+          <h1> The number of meals in this Restaurant! </h1>
+             <p>totally</p >
+            <p> {val.count} </p >
+            <p> in the </p >
+            <p> {val.nameofres} </p >
+            <p>!</p >
+
+            </div>
+        );
+
+      })}
       {/* <div className="form">
         <h1>Longest Review under each restaurant!</h1>
         <button onClick={longestRevew()}> Show me </button>
