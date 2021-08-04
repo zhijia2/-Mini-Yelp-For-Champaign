@@ -27,8 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get("/api/get", (require, response) => {
-    //const sqlSelect = "SELECT * FROM Restaurants where Restaurantid < 20 order by overallRating desc";
-    const sqlSelect = "SELECT * FROM AISFINE.goodres";
+    const sqlSelect = "SELECT DISTINCT restaurantname, review, meal, author, picture, num_of_5stars, website FROM AISFINE.goodres";
     db.query(sqlSelect, (err, result) => {
         //console.log(result)
         response.send(result);
@@ -102,6 +101,18 @@ app.put("/api/update/", (require, response) => {
         console.log(error);
     })
 });
+
+
+app.put("/api/insert/review", (require, response) => {
+    const RestaurantName = require.body.RestaurantName;
+    const RestaurantReview = require.body.RestaurantReview;
+    console.log(RestaurantReview);
+    const sqlInsert = "INSERT INTO `Reviews` (restaurantId, description) values (?, ?)";
+    db.query(sqlInsert, [RestaurantName, RestaurantReview], (err, result) => {
+        if (err)
+        console.log(error);
+    })
+})
 
 app.listen(3002, () => {
     console.log("running on port 3002");

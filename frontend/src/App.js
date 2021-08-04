@@ -11,8 +11,8 @@ function App() {
   const [ReviewList, setReviewList] = useState([]);
   const [searchmeal, setsearchmeal] = useState('');
   const [MealList, setMealList] = useState([]);
-  const [GoodRes, setGoodRes] = useState('');
   const [GoodResList, setGoodResList] = useState([]);
+
 
   useEffect(() => {
     Axios.get('http://localhost:3002/api/get').then((response) => {
@@ -60,19 +60,27 @@ function App() {
     setNewReview("")
   };
 
-  const longestRevew = () => {
-    Axios.get(`http://localhost:3002/api/getLongest`).then((response) => {
-      setReviewList(response.data)
+   const writeReview = (RestaurantName) => {
+    Axios.put(`http://localhost:3002/api/insert/review`, {
+      RestaurantName: RestaurantName,
+      RestaurantReview: newReview
     });
-
-    setReviewList([
-      ...ReviewList,
-      {
-        RestaurantName: RestaurantName,
-        RestaurantReview: Review
-      },
-    ]);
+    setNewReview("")
   };
+
+  // const longestRevew = () => {
+  //   Axios.get(`http://localhost:3002/api/getLongest`).then((response) => {
+  //     setReviewList(response.data)
+  //   });
+
+  //   setReviewList([
+  //     ...ReviewList,
+  //     {
+  //       RestaurantName: RestaurantName,
+  //       RestaurantReview: Review
+  //     },
+  //   ]);
+  // };
 //   Axios.get('http://localhost:3002/api/get').then((response) => {
 //     setRestaurantReviewList(response.data)
 //   })
@@ -105,14 +113,27 @@ function App() {
               <a href = {val.website}>{val.website}</a>
               <p>{val.description}</p>
               <p>{val.timeofpub}</p>
-              
-
+              <div>
+              <label>Rate the restaurant:</label>
               <input type="text" id="updateInput" onChange={(e) => {
                 setNewReview(e.target.value)
               } }/>
               <button onClick={() => {
                 updateReview(val.name)
               }}> Rate</button>
+              </div>
+
+
+
+              <label>Add your review:</label>
+              <textarea type="text" id="inputReview" onChange={(e) => {
+                setNewReview(e.target.value)
+                
+              } }/>
+              <button onClick={() => {
+                setRestaurantName(val.restaurantId)
+                writeReview(val.restaurantId)
+              }}> Submit review</button>
               </div>
           );
           
@@ -137,6 +158,7 @@ function App() {
               <img src = {val.picture}></img>
               <p>Posted by: {val.author}</p>
               <p>{val.review}</p>
+              <a href = {val.website}>Link: {val.website}</a>
               <p>Most expensive food: {val.meal}</p>
 
             </div>
