@@ -8,10 +8,11 @@ function App() {
   const [RestaurantReviewList, setRestaurantReviewList] = useState([]);
   const [newReview, setNewReview] = useState("");
   const [searchValue, setSearchValue] = useState('');
-  const [ReviewList, setReviewList] = useState([]);
   const [searchmeal, setsearchmeal] = useState('');
   const [MealList, setMealList] = useState([]);
   const [GoodResList, setGoodResList] = useState([]);
+  const [Author, setAuthor] = useState('');
+  const [addName, setAddName] = useState('');
 
 
   useEffect(() => {
@@ -60,10 +61,12 @@ function App() {
     setNewReview("")
   };
 
-   const writeReview = (RestaurantName) => {
+   const writeReview = (RestaurantName, addName) => {
     Axios.put(`http://localhost:3002/api/insert/review`, {
       RestaurantName: RestaurantName,
-      RestaurantReview: newReview
+      RestaurantReview: newReview,
+      Author: Author,
+      addName: addName
     });
     setNewReview("")
   };
@@ -126,16 +129,19 @@ function App() {
               }}> Rate</button>
               </div>
 
-
-
               <label>Add your review:</label>
               <textarea type="text" id="inputReview" onChange={(e) => {
                 setNewReview(e.target.value)
                 
               } }/>
+              <label>Your name:</label>
+              <input type="text" id="author" onChange={(e) => {
+                setAuthor(e.target.value)
+              } }/>
               <button onClick={() => {
+                setAddName(val.name);
                 setRestaurantName(val.restaurantId)
-                writeReview(val.restaurantId)
+                writeReview(val.restaurantId, val.name)
               }}> Submit review</button>
               </div>
           );
@@ -163,6 +169,7 @@ function App() {
               <p>{val.review}</p>
               <a href = {val.website}>Link: {val.website}</a>
               <p>Most expensive food: {val.meal}</p>
+              <p>This restaurant has {val.num_of_5stars} five star ratings!</p>
 
             </div>
         );

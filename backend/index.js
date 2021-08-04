@@ -106,9 +106,10 @@ app.put("/api/update/", (require, response) => {
 app.put("/api/insert/review", (require, response) => {
     const RestaurantName = require.body.RestaurantName;
     const RestaurantReview = require.body.RestaurantReview;
-    console.log(RestaurantReview);
-    const sqlInsert = "INSERT INTO `Reviews` (restaurantId, description) values (?, ?)";
-    db.query(sqlInsert, [RestaurantName, RestaurantReview], (err, result) => {
+    const Author = require.body.Author;
+    const addName = require.body.addName;
+    const sqlInsert = "INSERT INTO `Reviews` (restaurantId, description, author, name) values (?, ?, ?, ?)";
+    db.query(sqlInsert, [RestaurantName, RestaurantReview, Author, addName], (err, result) => {
         if (err)
         console.log(error);
     })

@@ -13,6 +13,9 @@
     }
 
 
+    .header {
+      background-color: rgb(246, 231, 214);
+    }
 
     .form {
       display: flex;
