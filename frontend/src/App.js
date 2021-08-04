@@ -87,14 +87,17 @@ function App() {
 // },[])
   return (
     <div className="App">
+       <div className="header">
       <h1>Find a Restaurant!</h1>
+      <h3>------For UIUC students-------</h3>
+      </div>
       <div className="form">
         <label>Restaurant name: </label>
         <input type="text" name="RestaurantSearch" placeholder = "Name" onChange={(e) => {
           setSearchValue(e.target.value)
         } }/>
         <button onClick={() => searchRes(searchValue)}> Search</button>
-        
+
       </div>
 
 
@@ -103,7 +106,7 @@ function App() {
         {RestaurantReviewList.map((val) => {
           return (
             <div className = "card">
-              
+
               <h2> {val.name} </h2>
               <img src = {val.imageLink}></img>
               <p>Restaurant Review: {val.overallRating}</p>
@@ -136,9 +139,9 @@ function App() {
               }}> Submit review</button>
               </div>
           );
-          
+
         })}
-        
+
 
 
       </div>
