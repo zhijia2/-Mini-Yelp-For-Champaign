@@ -11,10 +11,12 @@ function App() {
   const [ReviewList, setReviewList] = useState([]);
   const [searchmeal, setsearchmeal] = useState('');
   const [MealList, setMealList] = useState([]);
+  const [GoodRes, setGoodRes] = useState('');
+  const [GoodResList, setGoodResList] = useState([]);
 
   useEffect(() => {
     Axios.get('http://localhost:3002/api/get').then((response) => {
-      setRestaurantReviewList(response.data)
+      setGoodResList(response.data)
     })
   },[])
 
@@ -88,21 +90,23 @@ function App() {
       </div>
 
 
-      
 
       <div className="form">
-        
-              
         {RestaurantReviewList.map((val) => {
           return (
             <div className = "card">
-              <h1> {val.name} </h1>
+              
+              <h2> {val.name} </h2>
+              <img src = {val.imageLink}></img>
               <p>Restaurant Review: {val.overallRating}</p>
               <p>Price Level: {val.priceLevel}</p>
               <p>Address: {val.streetAddress}, {val.city}, {val.states} {val.postalCode}</p>
               <p>Number: {val.telephone}</p>
+              <a href = {val.website}>{val.website}</a>
               <p>{val.description}</p>
               <p>{val.timeofpub}</p>
+              
+
               <input type="text" id="updateInput" onChange={(e) => {
                 setNewReview(e.target.value)
               } }/>
@@ -113,6 +117,35 @@ function App() {
           );
           
         })}
+        
+
+
+      </div>
+
+
+
+
+
+
+      <div className= "form">
+
+      <h1>Most popular restaurants: </h1>
+      {GoodResList.map((val) => {
+        return (
+          <div className = "card">
+          <h2> {val.restaurantname} </h2>
+              <img src = {val.picture}></img>
+              <p>Posted by: {val.author}</p>
+              <p>{val.review}</p>
+              <p>Most expensive food: {val.meal}</p>
+
+            </div>
+        );
+
+      })}
+
+
+
         <h1>Add a Restaurant!</h1>
         <label>Restaurant Name to modify:</label>
         <input type="text" name="RestaurantName" placeholder = "Name" onChange={(e) => {
@@ -126,8 +159,29 @@ function App() {
         <button onClick={submitReview}> Submit</button>
         <button onClick={() => { deleteReview(RestaurantName) }}> Delete</button>
 
-
       </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <div className= "form">
 
       <h1>How many meals this Restaurant have?: </h1>
         <input type="text" name="RestaurantSearch" placeholder = "Name" onChange={(e) => {
@@ -149,6 +203,7 @@ function App() {
         );
 
       })}
+      </div>
       {/* <div className="form">
         <h1>Longest Review under each restaurant!</h1>
         <button onClick={longestRevew()}> Show me </button>

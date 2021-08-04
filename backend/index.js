@@ -12,14 +12,7 @@ var db = mysql.createConnection({
     database:'AISFINE',
 })
 
- // db.connect(function(err) {
-//     if (err) throw err;
-//     var sql = "INSERT INTO `movie_reviews` (`id`,`RestaurantName`, `movieReview`) VALUES (5,'inception', 'good movie');";
-//     db.query(sql, function (err, result) {
-//       if (err) throw err;
-//       console.log(result.affectedRows + " record(s) updated");
-//     });
-//   });
+db.connect();
 
 app.get('/', (require, response) => {
     const sqlInsert = "select  * from Restaurants where restaurantid = 1";
@@ -35,23 +28,22 @@ app.use(express.json());
 
 app.get("/api/get", (require, response) => {
     //const sqlSelect = "SELECT * FROM Restaurants where Restaurantid < 20 order by overallRating desc";
-    const sqlSelect = "select rv.reviewid,rv.timeofpub, rv.description, rv.rating, r.name, r.streetAddress, r.overallRating, r.telephone, r.states, r.city, r.priceLevel from AISFINE.Reviews rv join AISFINE.Restaurants r using (restaurantId) "
-    + "where char_length(description) = (select max(char_length(description)) from AISFINE.Reviews rv1 group by rv1.restaurantId having rv.restaurantId = rv1.restaurantId) and r.restaurantid < 20 order by r.name;";
+    const sqlSelect = "SELECT * FROM AISFINE.goodres";
     db.query(sqlSelect, (err, result) => {
         //console.log(result)
         response.send(result);
     });
 });
 
-app.get("/api.getLongest", (require, response) => {
-    console.log("hh");
-    const sqlSelect = 'select rv.reviewid,rv.timeofpub, rv.description, rv.rating, r.name, r.streetAddress, r.overallRating, r.telephone from AISFINE.Reviews rv join AISFINE.Restaurants r using (restaurantId) where char_length(description) = (select max(char_length(description)) from AISFINE.Reviews rv1 '
-                        + 'group by rv1.restaurantId having rv.restaurantId = rv1.restaurantId) and r.restaurantid = 20 order by r.name;'
-    db.query(sqlSelect, (err, result) => {
-        console.log(result)
-        response.send(result);
-    });
-});
+// app.get("/api.getLongest", (require, response) => {
+//     console.log("hh");
+//     const sqlSelect = 'select rv.reviewid,rv.timeofpub, rv.description, rv.rating, r.name, r.streetAddress, r.overallRating, r.telephone from AISFINE.Reviews rv join AISFINE.Restaurants r using (restaurantId) where char_length(description) = (select max(char_length(description)) from AISFINE.Reviews rv1 '
+//                         + 'group by rv1.restaurantId having rv.restaurantId = rv1.restaurantId) and r.restaurantid = 20 order by r.name;'
+//     db.query(sqlSelect, (err, result) => {
+//         console.log(result)
+//         response.send(result);
+//     });
+// });
 
 app.patch("/api/maxvalue/", (require, response) => {
     const searchmeal = require.body.searchmeal;
