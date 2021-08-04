@@ -95,7 +95,7 @@ function App() {
       <h3>------For UIUC students-------</h3>
       </div>
       <div className="form">
-        <label>Restaurant name: </label>
+        <h2>Restaurant name: </h2>
         <input type="text" name="RestaurantSearch" placeholder = "Name" onChange={(e) => {
           setSearchValue(e.target.value)
         } }/>
